@@ -1,0 +1,40 @@
+name: Docker Build and Publish
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # PHP application
+      - name: Build the PHP Docker image
+        run: |
+          docker build ./php --file php/Dockerfile --tag omer10068/final-python:${{ github.run_number }}-${{ github.sha }}-php
+
+      # Node.js application
+      - name: Build the Node Docker image
+        run: |
+          docker build ./node --file node/Dockerfile --tag omer10068/final-python:${{ github.run_number }}-${{ github.sha }}-node
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+      - name: Push PHP Docker image to registry
+        run: |
+          docker push omer10068/final-python:${{ github.run_number }}-${{ github.sha }}-php
+
+      - name: Push Node Docker image to registry
+        run: |
+          docker push omer10068/final-python:${{ github.run_number }}-${{ github.sha }}-node
