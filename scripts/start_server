@@ -1,2 +1,3 @@
 #!/bin/bash
+service docker start
 docker run --name final-python -d -p 80:5000 omer10068/final-python
