@@ -1,1 +1,1 @@
-docker run -d -p 80:5000 omer10068/final-python --name final-python-container
+docker run --name final-python-container -d -p 5000:5000 final-python
