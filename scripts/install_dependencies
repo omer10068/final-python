@@ -1,3 +1,6 @@
 #!/bin/bash
-curl -fsSL https://get.docker.com -o get-docker.sh
-sh get-docker.sh
+yum update -y
+amazon-linux-extras install docker -y
+service docker start
+usermod -a -G docker ec2-user
+chkconfig docker on
